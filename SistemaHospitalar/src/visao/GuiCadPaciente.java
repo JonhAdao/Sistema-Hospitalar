@@ -171,7 +171,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
                         "Selecione um Convênio para prosseguir");
                 jcConvenio.requestFocus();
             } // fecha else
-            else {
+            else if (!emptyFields()) {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -298,5 +298,35 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
         }
 
         return validado;
+    }
+
+    private boolean emptyFields() {
+
+        boolean vazio = true;
+
+        if (jtNome.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Insira um nome para prosseguir");
+            jtNome.requestFocus();
+
+        } else if (jtCpf.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Insira o CPF para prosseguir");
+            jtCpf.requestFocus();
+
+        } else if (jtDataNasc.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Insira uma data de nascimento para prosseguir");
+            jtDataNasc.requestFocus();
+
+        } else if (jtEndereco.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Insira um endereço para prosseguir");
+            jtEndereco.requestFocus();
+
+        } else if (jtTelefone.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Insira um telefone para prosseguir");
+            jtTelefone.requestFocus();
+
+        } else {
+            vazio = false;
+        }
+        return vazio;
     }
 }
