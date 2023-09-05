@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -39,7 +39,7 @@ public class PacienteDAO {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
             // String que receberá instrução SQL
-            String sql = "insert into PACIENTE(NOME, ENDERECO, DATA_NASC, TELEFONE, CPF, RG, ID_CONVENIO_FK) values(?,?,?,?,?,?,?)";
+            String sql = "insert into PACIENTE(NOME, ENDERECO, DATA_NASC, TELEFONE, CPF, RG, ID_CONVENIO_FK, EMAIL) values(?,?,?,?,?,?,?,?)";
 
             PreparedStatement pst = this.con.prepareStatement(sql);
 
@@ -51,6 +51,7 @@ public class PacienteDAO {
             pst.setString(5, pac.getCpf());
             pst.setString(6, pac.getRg());
             pst.setInt(7, pac.getIdConvenio());
+            pst.setString(8, pac.getEmail());
 
             // Executando o PreparedStatement
             pst.execute();
@@ -107,6 +108,7 @@ public class PacienteDAO {
                 pac.setCpf(rs.getString("CPF"));
                 pac.setRg(rs.getString("RG"));
                 pac.setIdConvenio(rs.getInt("ID_CONVENIO_FK"));
+                pac.setEmail(rs.getString("EMAIL"));
 
 
                 /* Inserindo o objeto Paciente no ArrayList */
@@ -161,6 +163,7 @@ public class PacienteDAO {
                 pac.setCpf(rs.getString("CPF"));
                 pac.setRg(rs.getString("RG"));
                 pac.setIdConvenio(rs.getInt("ID_CONVENIO_FK"));
+                pac.setEmail(rs.getString("EMAIL"));
 
                 /* Inserindo o objeto pac no ArrayList */
                 pacientes.add(pac);

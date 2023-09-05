@@ -6,6 +6,12 @@
             <file>file:/C:/Users/devel/OneDrive%20-%20Serviço%20Nacional%20de%20Aprendizagem%20Comercial/AULAS%20EAD/TDS%20UC12%20-%20Teste/Meus%20códigos%20Atividade/SistemaHospitalar/src/visao/GuiJTableBuscaPaciente.java</file>
             <file>file:/C:/Users/devel/OneDrive%20-%20Serviço%20Nacional%20de%20Aprendizagem%20Comercial/AULAS%20EAD/TDS%20UC12%20-%20Teste/Meus%20códigos%20Atividade/SistemaHospitalar/src/visao/Menu.java</file>
         </group>
-        <group name="Exemplos &amp; Atividades"/>
+        <group name="Exemplos &amp; Atividades">
+            <file>file:/C:/Users/jonat/OneDrive/Documentos/SENAC%20EAD/UC12/Sistema%20Hosp%20%20UC12/SistemaHospitalar/src/dao/ConvenioDAO.java</file>
+            <file>file:/C:/Users/jonat/OneDrive/Documentos/SENAC%20EAD/UC12/Sistema%20Hosp%20%20UC12/SistemaHospitalar/src/modelo/Paciente.java</file>
+            <file>file:/C:/Users/jonat/OneDrive/Documentos/SENAC%20EAD/UC12/Sistema%20Hosp%20%20UC12/SistemaHospitalar/src/dao/PacienteDAO.java</file>
+            <file>file:/C:/Users/jonat/OneDrive/Documentos/SENAC%20EAD/UC12/Sistema%20Hosp%20%20UC12/SistemaHospitalar/src/dao/DAOFactory.java</file>
+            <file>file:/C:/Users/jonat/OneDrive/Documentos/SENAC%20EAD/UC12/Sistema%20Hosp%20%20UC12/SistemaHospitalar/src/visao/GuiCadPaciente.java</file>
+        </group>
     </open-files>
 </project-private>

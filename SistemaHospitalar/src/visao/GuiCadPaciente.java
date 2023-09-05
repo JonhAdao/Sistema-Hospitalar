@@ -171,8 +171,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(this,
                         "Selecione um Convênio para prosseguir");
                 jcConvenio.requestFocus();
-            } // fecha else
-            else {
+            } else {
                 if (!emptyFields()) {
                     if (!validarCampos()) {
 
@@ -181,12 +180,13 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
                         Paciente pac = new Paciente();
 
                         // Atribuindo valores aos atributos do Paciente com base nos campos preenchidos pelo usuário na tela
-                        pac.setNome(jtDataNasc.getText());
+                        pac.setNome(jtNome.getText());
                         pac.setEndereco(jtEndereco.getText());
                         pac.setDataNascimento(sdf.parse(jtDataNasc.getText()));
                         pac.setTelefone(jtTelefone.getText());
                         pac.setCpf(jtCpf.getText());
                         pac.setRg(jtRG.getText());
+                        pac.setEmail(jtEmail1.getText());
 
                         // Obtendo o nome do convênio selecionado pelo usuário
                         String conv = jcConvenio.getSelectedItem().toString();
@@ -203,7 +203,6 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
                         // Criando objeto PacienteDAO para cadastrar o paciente no banco de dados
                         PacienteDAO pacDAO = new PacienteDAO();
                         pacDAO.cadastrarPaciente(pac);
-
                         // Mensagem de sucesso
                         JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
                         limpar();
@@ -298,27 +297,44 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
     private boolean validarCampos() {
         boolean validado = true;
 
-        int nomeValido = jtNome.getText().toCharArray().length;
-        int cpfValido = jtCpf.getText().toCharArray().length;
+        int nomeCaractermax = jtNome.getText().toCharArray().length;
+        int cpfCaractermax = jtCpf.getText().toCharArray().length;
+        int enderecoCaractermax = jtEndereco.getText().toCharArray().length;
+        int telCaractermax = jtTelefone.getText().toCharArray().length;
         boolean dataValida = jtDataNasc.getText().matches("[0-9]{2}[/][0-9]{2}[/][0-9]{4}");
-        boolean telvalido = jtTelefone.getText().matches("[(][0-9]{2}[)][0-9]{4}[-][0-9]{4}");
+        boolean telvalido = jtTelefone.getText().matches("[(][0-9]{2}[)][ ][0-9]{4}[-][0-9]{4}");
+        boolean emailValido = jtEmail1.getText().matches("\\w+@\\w+\\.\\w{2,3}");
 
         if (dataValida == false) {
             JOptionPane.showMessageDialog(rootPane, "Informe a data no formato: 04/02/1993");
             jtDataNasc.requestFocus();
 
-        } else if (nomeValido > 55) {
-            JOptionPane.showMessageDialog(rootPane, "Só é permitido no máximo 55 caracteres");
+        } else if (nomeCaractermax > 55) {
+            JOptionPane.showMessageDialog(rootPane, "Só é permitido no máximo 55 caracteres no campo Nome");
             jtNome.requestFocus();
 
-        } else if (cpfValido > 11) {
-            JOptionPane.showMessageDialog(rootPane, "Só é permitido no máximo 11 caracteres");
+        } else if (enderecoCaractermax > 200) {
+            JOptionPane.showMessageDialog(rootPane, "Só é permitido no máximo 200 caracteres no campo Endereço");
+            jtEndereco.requestFocus();
+
+        } else if (telCaractermax > 15) {
+            JOptionPane.showMessageDialog(rootPane, "Só é permitido no máximo 15 caracteres no campo Telefone");
+            jtTelefone.requestFocus();
+
+        } else if (cpfCaractermax > 11) {
+            JOptionPane.showMessageDialog(rootPane, "Só é permitido no máximo 11 caracteres no campo CPF");
             jtCpf.requestFocus();
 
         } else if (telvalido == false) {
-            JOptionPane.showMessageDialog(rootPane, "Informe o telefone no formato (xx)xxxx-xxxx");
+            JOptionPane.showMessageDialog(rootPane, "Informe o telefone no formato: (xx) xxxx-xxxx");
             jtTelefone.requestFocus();
 
+        } else if (emailValido == false & !jtEmail1.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Informe o email no formato: qualquer@email.com");
+            jtEmail1.requestFocus();
+
+        } else {
+            validado = false;
         }
 
         return validado;
