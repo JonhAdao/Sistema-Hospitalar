@@ -164,6 +164,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cadastrar() {
+
         try {
             // Verificando se um convênio foi selecionado no JComboBox
             if (jcConvenio.getSelectedIndex() == 0) {
@@ -171,48 +172,55 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
                         "Selecione um Convênio para prosseguir");
                 jcConvenio.requestFocus();
             } // fecha else
-            else if (!emptyFields()) {
+            else {
+                if (!emptyFields()) {
+                    if (!validarCampos()) {
 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-                Paciente pac = new Paciente();
+                        Paciente pac = new Paciente();
 
-                // Atribuindo valores aos atributos do Paciente com base nos campos preenchidos pelo usuário na tela
-                pac.setNome(jtDataNasc.getText());
-                pac.setEndereco(jtEndereco.getText());
-                pac.setDataNascimento(sdf.parse(jtDataNasc.getText()));
-                pac.setTelefone(jtTelefone.getText());
-                pac.setCpf(jtCpf.getText());
-                pac.setRg(jtRG.getText());
+                        // Atribuindo valores aos atributos do Paciente com base nos campos preenchidos pelo usuário na tela
+                        pac.setNome(jtDataNasc.getText());
+                        pac.setEndereco(jtEndereco.getText());
+                        pac.setDataNascimento(sdf.parse(jtDataNasc.getText()));
+                        pac.setTelefone(jtTelefone.getText());
+                        pac.setCpf(jtCpf.getText());
+                        pac.setRg(jtRG.getText());
 
-                // Obtendo o nome do convênio selecionado pelo usuário
-                String conv = jcConvenio.getSelectedItem().toString();
+                        // Obtendo o nome do convênio selecionado pelo usuário
+                        String conv = jcConvenio.getSelectedItem().toString();
 
-                // Criando objeto ConvenioDAO para buscar o convênio no banco de dados
-                ConvenioDAO convDAO = new ConvenioDAO();
+                        // Criando objeto ConvenioDAO para buscar o convênio no banco de dados
+                        ConvenioDAO convDAO = new ConvenioDAO();
 
-                // Buscando o convênio no banco de dados com base no nome selecionado pelo usuário
-                Convenio convenio = convDAO.buscarConvenioFiltro(conv);
+                        // Buscando o convênio no banco de dados com base no nome selecionado pelo usuário
+                        Convenio convenio = convDAO.buscarConvenioFiltro(conv);
 
-                // Atribuindo o ID do convênio ao paciente
-                pac.setConvenio(convenio.getIdConvenio());
+                        // Atribuindo o ID do convênio ao paciente
+                        pac.setConvenio(convenio.getIdConvenio());
 
-                // Criando objeto PacienteDAO para cadastrar o paciente no banco de dados
-                PacienteDAO pacDAO = new PacienteDAO();
-                pacDAO.cadastrarPaciente(pac);
+                        // Criando objeto PacienteDAO para cadastrar o paciente no banco de dados
+                        PacienteDAO pacDAO = new PacienteDAO();
+                        pacDAO.cadastrarPaciente(pac);
 
-                // Mensagem de sucesso
-                JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
+                        // Mensagem de sucesso
+                        JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
+                        limpar();
+                    }
+                }
             }
 
         } catch (HeadlessException | SQLException | ParseException e) {
             JOptionPane.showMessageDialog(this,
                     "ERRO! " + e.getMessage());
-        } // fecha catch
+
+        }
+        // fecha catch
 
     }// fecha método
 
-//apaga valores dos campos
+    //apaga valores dos campos
     private void limpar() {
         jtNome.setText("");
         jtRG.setText("");
@@ -261,7 +269,6 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
 
     private void jbCadastrar1ActionPerformed(java.awt.event.ActionEvent evt) {
         cadastrar();
-        limpar();
 
     }
 
@@ -291,16 +298,27 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
     private boolean validarCampos() {
         boolean validado = true;
 
+        int nomeValido = jtNome.getText().toCharArray().length;
+        int cpfValido = jtCpf.getText().toCharArray().length;
         boolean dataValida = jtDataNasc.getText().matches("[0-9]{2}[/][0-9]{2}[/][0-9]{4}");
-        boolean telvalido = jtTelefone.getText().matches("[(][0-9]{2}[)][0-9]{2}[/][0-9]{4}");
+        boolean telvalido = jtTelefone.getText().matches("[(][0-9]{2}[)][0-9]{4}[-][0-9]{4}");
 
         if (dataValida == false) {
-            JOptionPane.showMessageDialog(rootPane, "ATENÇÃO! A data tem que ser no formato: 04/02/1993");
+            JOptionPane.showMessageDialog(rootPane, "Informe a data no formato: 04/02/1993");
             jtDataNasc.requestFocus();
 
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Dados incluidos com sucesso");
-            validado = false;
+        } else if (nomeValido > 55) {
+            JOptionPane.showMessageDialog(rootPane, "Só é permitido no máximo 55 caracteres");
+            jtNome.requestFocus();
+
+        } else if (cpfValido > 11) {
+            JOptionPane.showMessageDialog(rootPane, "Só é permitido no máximo 11 caracteres");
+            jtCpf.requestFocus();
+
+        } else if (telvalido == false) {
+            JOptionPane.showMessageDialog(rootPane, "Informe o telefone no formato (xx)xxxx-xxxx");
+            jtTelefone.requestFocus();
+
         }
 
         return validado;
