@@ -214,9 +214,14 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
 
 //apaga valores dos campos
     private void limpar() {
+        jtNome.setText("");
+        jtRG.setText("");
+        jtTelefone.setText("");
+        jtEmail1.setText("");
         jtDataNasc.setText("");
         jtEndereco.setText("");
         jtCpf.setText("");
+        jcConvenio.setSelectedIndex(0);
     }// fecha método
 
     // metodo para preencher o combo box com os produtos cadastrados no banco de dados
@@ -256,6 +261,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
 
     private void jbCadastrar1ActionPerformed(java.awt.event.ActionEvent evt) {
         cadastrar();
+        limpar();
 
     }
 
