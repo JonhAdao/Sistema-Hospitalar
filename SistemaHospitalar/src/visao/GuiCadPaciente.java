@@ -1,8 +1,10 @@
-
 package visao;
 
 import dao.ConvenioDAO;
 import dao.PacienteDAO;
+import java.awt.HeadlessException;
+import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -163,21 +165,25 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
 
     private void cadastrar() {
         try {
-
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-            Paciente pac = new Paciente();
-
-            // Atribuindo valores aos atributos do Paciente com base nos campos preenchidos pelo usuário na tela
-            pac.setNome(jtNome.getText());
-            pac.setEndereco(jtEndereco.getText());
-            pac.setDataNascimento(sdf.parse(jtDataNasc.getText()));
-            pac.setTelefone(jtTelefone.getText());
-            pac.setCpf(jtCpf.getText());
-            pac.setRg(jtRG.getText());
-
             // Verificando se um convênio foi selecionado no JComboBox
-            if (!(jcConvenio.getSelectedIndex() == 0)) {
+            if (jcConvenio.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Selecione um Convênio para prosseguir");
+                jcConvenio.requestFocus();
+            } // fecha else
+            else {
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+                Paciente pac = new Paciente();
+
+                // Atribuindo valores aos atributos do Paciente com base nos campos preenchidos pelo usuário na tela
+                pac.setNome(jtDataNasc.getText());
+                pac.setEndereco(jtEndereco.getText());
+                pac.setDataNascimento(sdf.parse(jtDataNasc.getText()));
+                pac.setTelefone(jtTelefone.getText());
+                pac.setCpf(jtCpf.getText());
+                pac.setRg(jtRG.getText());
 
                 // Obtendo o nome do convênio selecionado pelo usuário
                 String conv = jcConvenio.getSelectedItem().toString();
@@ -191,33 +197,28 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
                 // Atribuindo o ID do convênio ao paciente
                 pac.setConvenio(convenio.getIdConvenio());
 
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "Selecione um produto");
-            } // fecha else
+                // Criando objeto PacienteDAO para cadastrar o paciente no banco de dados
+                PacienteDAO pacDAO = new PacienteDAO();
+                pacDAO.cadastrarPaciente(pac);
 
-           // Criando objeto PacienteDAO para cadastrar o paciente no banco de dados
-            PacienteDAO pacDAO = new PacienteDAO();
-            pacDAO.cadastrarPaciente(pac);
+                // Mensagem de sucesso
+                JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
+            }
 
-            // Mensagem de sucesso
-            JOptionPane.showMessageDialog(this, "Paciente cadastrado com sucesso!");
-
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException | ParseException e) {
             JOptionPane.showMessageDialog(this,
                     "ERRO! " + e.getMessage());
         } // fecha catch
 
     }// fecha método
 
-    //apaga valores dos campos
+//apaga valores dos campos
     private void limpar() {
-        jtNome.setText("");
+        jtDataNasc.setText("");
         jtEndereco.setText("");
         jtCpf.setText("");
     }// fecha método
 
-    
     // metodo para preencher o combo box com os produtos cadastrados no banco de dados
     private void preencherCombo() {
         try {
@@ -255,7 +256,7 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
 
     private void jbCadastrar1ActionPerformed(java.awt.event.ActionEvent evt) {
         cadastrar();
-        limpar();
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -280,4 +281,22 @@ public class GuiCadPaciente extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jtRG;
     private javax.swing.JTextField jtTelefone;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validarCampos() {
+        boolean validado = true;
+
+        boolean dataValida = jtDataNasc.getText().matches("[0-9]{2}[/][0-9]{2}[/][0-9]{4}");
+        boolean telvalido = jtTelefone.getText().matches("[(][0-9]{2}[)][0-9]{2}[/][0-9]{4}");
+
+        if (dataValida == false) {
+            JOptionPane.showMessageDialog(rootPane, "ATENÇÃO! A data tem que ser no formato: 04/02/1993");
+            jtDataNasc.requestFocus();
+
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Dados incluidos com sucesso");
+            validado = false;
+        }
+
+        return validado;
+    }
 }
