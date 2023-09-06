@@ -182,7 +182,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
                     String.valueOf(pac.get(i).getTelefone()),
                     String.valueOf(pac.get(i).getEndereco()),
                     String.valueOf(pac.get(i).getDataNascimento()),
-                    String.valueOf(pac.get(i).getIdConvenio()).formatted(pac.get(i).getNome()),
+                    String.valueOf(pac.get(i).getIdConvenio()),
                     String.valueOf(pac.get(i).getEmail()),});
 
             }//fecha for
@@ -235,9 +235,14 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
                 for (int i = 0; i < p.size(); i++) {
                     dtm.addRow(new String[]{
                         String.valueOf(p.get(i).getIdPaciente()),
-                        p.get(i).getNome(),
-                        p.get(i).getCpf(),
-                        p.get(i).getTelefone(),});
+                        String.valueOf(p.get(i).getNome()),
+                        String.valueOf(p.get(i).getCpf()),
+                        String.valueOf(p.get(i).getRg()),
+                        String.valueOf(p.get(i).getTelefone()),
+                        String.valueOf(p.get(i).getEndereco()),
+                        String.valueOf(p.get(i).getDataNascimento()),
+                        String.valueOf(p.get(i).getIdConvenio()),
+                        String.valueOf(p.get(i).getEmail()),});
 
                 }//fecha for
 
@@ -258,7 +263,9 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
 
 
     private void jbLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLimparActionPerformed
-        limparTabela();
+
+        jtFiltro.setText("");
+        preencherTabela();
     }//GEN-LAST:event_jbLimparActionPerformed
 
     private void jtFiltroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtFiltroKeyReleased
