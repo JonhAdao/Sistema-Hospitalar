@@ -1,5 +1,6 @@
 package visao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -13,7 +14,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
      com o nome das colunas */
     DefaultTableModel dtm = new DefaultTableModel(
             new Object[][]{},
-            new Object[]{"Código", "Nome", "CPF", "Telefone"});
+            new Object[]{"Código", "Nome", "CPF", "RG", "Telefone", "Endereço", "Data de nascimento", "Convênio", "Email"});
 
     public GuiJTableBuscaPaciente() {
         initComponents();
@@ -56,14 +57,17 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Código", "Nome", "CPF", "Telefone"
+                "Código", "Nome", "CPF", "RG", "Telefone", "Endereço", "Data de nascimento", "Convênio", "Email"
             }
         ));
         jtablePaciente.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jtablePaciente);
+        if (jtablePaciente.getColumnModel().getColumnCount() > 0) {
+            jtablePaciente.getColumnModel().getColumn(0).setResizable(false);
+        }
 
         jLayeredPane1.add(jScrollPane1);
-        jScrollPane1.setBounds(30, 20, 452, 180);
+        jScrollPane1.setBounds(30, 20, 670, 180);
 
         jLayeredPane2.setBackground(new java.awt.Color(255, 255, 255));
         jLayeredPane2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -85,7 +89,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
             }
         });
         jLayeredPane2.add(jbPreencherTabela);
-        jbPreencherTabela.setBounds(270, 40, 140, 40);
+        jbPreencherTabela.setBounds(510, 40, 140, 40);
 
         jLayeredPane3.setBackground(new java.awt.Color(255, 255, 255));
         jLayeredPane3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -93,7 +97,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
 
         jlFiltro.setText("Valor para pesquisar:");
         jLayeredPane3.add(jlFiltro);
-        jlFiltro.setBounds(250, 20, 120, 16);
+        jlFiltro.setBounds(510, 20, 120, 16);
 
         jtFiltro.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -101,7 +105,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
             }
         });
         jLayeredPane3.add(jtFiltro);
-        jtFiltro.setBounds(250, 40, 170, 40);
+        jtFiltro.setBounds(510, 40, 170, 40);
 
         jcomboFiltro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Código Paciente", "CPF", "Nome Paciente", " " }));
         jcomboFiltro.addActionListener(new java.awt.event.ActionListener() {
@@ -123,7 +127,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
                     .addComponent(jLayeredPane2)
                     .addComponent(jLayeredPane3))
                 .addContainerGap())
@@ -174,14 +178,20 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
                     String.valueOf(pac.get(i).getIdPaciente()),
                     String.valueOf(pac.get(i).getNome()),
                     String.valueOf(pac.get(i).getCpf()),
-                    String.valueOf(pac.get(i).getTelefone()),});
+                    String.valueOf(pac.get(i).getRg()),
+                    String.valueOf(pac.get(i).getTelefone()),
+                    String.valueOf(pac.get(i).getEndereco()),
+                    String.valueOf(pac.get(i).getDataNascimento()),
+                    String.valueOf(pac.get(i).getIdConvenio()).formatted(pac.get(i).getNome()),
+                    String.valueOf(pac.get(i).getEmail()),});
+
             }//fecha for
 
             /* Adicionando o modelo de tabela 
          com os dados na tabela produto */
             jtablePaciente.setModel(dtm);
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
                     "Erro! " + e.getMessage());
         }//fecha catch
@@ -227,7 +237,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
                         String.valueOf(p.get(i).getIdPaciente()),
                         p.get(i).getNome(),
                         p.get(i).getCpf(),
-                         p.get(i).getTelefone(),});
+                        p.get(i).getTelefone(),});
 
                 }//fecha for
 
