@@ -18,7 +18,7 @@ import persistencia.ConexaoBanco;
 ela é responsável por realizar as operações de cadastro e busca de pacientes no banco de dados.
  */
 public class PacienteDAO {
-
+    
     private ConexaoBanco conexao;
     private Connection con;
 
@@ -32,15 +32,15 @@ public class PacienteDAO {
 
     // método cadastrarPaciente
     public void cadastrarPaciente(Paciente pac) throws SQLException {
-
+        
         try {
-
+            
             con = conexao.getConexao();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 
             // String que receberá instrução SQL
             String sql = "insert into PACIENTE(NOME, ENDERECO, DATA_NASC, TELEFONE, CPF, RG, ID_CONVENIO_FK, EMAIL) values(?,?,?,?,?,?,?,?)";
-
+            
             PreparedStatement pst = this.con.prepareStatement(sql);
 
             // Atribuindo valores aos parâmetros
@@ -55,14 +55,14 @@ public class PacienteDAO {
 
             // Executando o PreparedStatement
             pst.execute();
-
+            
         } catch (SQLException se) {
             throw new SQLException("Erro ao inserir dados no Banco de Dados! " + se.getMessage());
         } finally {
 
             // Encerrando as conexões
             con.close();
-
+            
         } // fecha finally
     }// fecha método cadastrarPaciente
 
@@ -74,7 +74,7 @@ public class PacienteDAO {
          * SQL no banco de dados
          */
         ResultSet rs;
-
+        
         try {
             // Criando variável sql vazia
             String sql;
@@ -82,10 +82,10 @@ public class PacienteDAO {
             /* Montando o sql com a consulta desejada pelo usuário.
             A consulta foi enviada para o método em uma String chamada query */
             sql = "SELECT * FROM paciente " + query;
-
+            
             this.con = this.conexao.getConexao();
             PreparedStatement pst = con.prepareStatement(sql);
-
+            
             rs = pst.executeQuery();
 
 
@@ -117,14 +117,14 @@ public class PacienteDAO {
 
             // Retornando o ArrayList com todos objetos
             return pacientes;
-
+            
         } catch (SQLException se) {
             throw new SQLException("Erro ao buscar dados do Banco! " + se.getMessage());
         } finally {
             con.close();
         }
     }
-
+    
     public ArrayList<Paciente> buscarPaciente() throws SQLException {
 
 
@@ -133,15 +133,15 @@ public class PacienteDAO {
          * SQL no banco de dados
          */
         ResultSet rs;
-
+        
         try {
 
             // String que receberá instrução SQL
-            String sql = "SELECT * FROM PACIENTE";
-
+            String sql = "SELECT * , C.NOME_CONVENIO FROM PACIENTE AS P JOIN CONVENIO AS C ON P.ID_CONVENIO_FK = C.ID_CONVENIO";
+            
             this.con = this.conexao.getConexao();
             PreparedStatement pst = con.prepareStatement(sql);
-
+            
             rs = pst.executeQuery();
 
 
@@ -163,6 +163,7 @@ public class PacienteDAO {
                 pac.setCpf(rs.getString("CPF"));
                 pac.setRg(rs.getString("RG"));
                 pac.setIdConvenio(rs.getInt("ID_CONVENIO_FK"));
+                pac.setNomeConv(rs.getString("C.NOME_CONVENIO"));
                 pac.setEmail(rs.getString("EMAIL"));
 
                 /* Inserindo o objeto pac no ArrayList */
@@ -172,11 +173,11 @@ public class PacienteDAO {
             // Retornando o ArrayList com todos objetos
             return pacientes;
         } catch (SQLException se) {
-
+            
             throw new SQLException("Erro ao buscar dados do Banco! " + se.getMessage());
         } finally {
             con.close();
         }
     }
-
+    
 }

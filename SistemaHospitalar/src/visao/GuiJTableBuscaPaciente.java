@@ -182,7 +182,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
                     String.valueOf(pac.get(i).getTelefone()),
                     String.valueOf(pac.get(i).getEndereco()),
                     String.valueOf(pac.get(i).getDataNascimento()),
-                    String.valueOf(pac.get(i).getIdConvenio()),
+                    String.valueOf(pac.get(i).getNomeConv()),
                     String.valueOf(pac.get(i).getEmail()),});
 
             }//fecha for

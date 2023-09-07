@@ -21,12 +21,13 @@ public class Paciente {
     private String rg;
     private String email;
     private int convenio;
+    private String nomeConv;
 
     public Paciente() {
 
     }
 
-    public Paciente(int idPaciente, String nome, String endereco, Date dataNascimento, String telefone, String cpf, String rg, String email, int convenio) {
+    public Paciente(int idPaciente, String nome, String endereco, Date dataNascimento, String telefone, String cpf, String rg, String email, int convenio, String nomeconv) {
         this.idPaciente = idPaciente;
         this.nome = nome;
         this.endereco = endereco;
@@ -36,6 +37,7 @@ public class Paciente {
         this.rg = rg;
         this.email = email;
         this.convenio = convenio;
+        this.nomeConv = nomeconv;
     }
 
     public String getEmail() {
@@ -116,6 +118,14 @@ public class Paciente {
 
     public void setIdConvenio(int convenio) {
         this.convenio = convenio;
+    }
+
+    public String getNomeConv() {
+        return nomeConv;
+    }
+
+    public void setNomeConv(String nomeConv) {
+        this.nomeConv = nomeConv;
     }
 
 }
