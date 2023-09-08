@@ -197,54 +197,57 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
         try {
             /* Se o text field não estiver vazio ele busca! */
             if (!jtFiltro.getText().isEmpty()) {
+
                 PacienteServicos ps = ServicosFactory.getPacienteServicos();
 
                 /* Buscando o valor da JComboBox. O método getSelectedItem
          devolve um Object selecionado na JCombo */
                 String pesquisa = (String) jcomboFiltro.getSelectedItem();
+                if (!validarCampos(pesquisa)) {
 
-                //Criando variável que armazenará a consulta.
-                String query;
+                    //Criando variável que armazenará a consulta.
+                    String query;
 
-                /* Testando o que o usuário escolheu no JComboBox. Conforme
+                    /* Testando o que o usuário escolheu no JComboBox. Conforme
                  o que foi escolhido uma determinada consulta será montada. */
-                if (pesquisa.equals("Código Paciente")) {
-                    query = "where P.ID_PACIENTE = " + jtFiltro.getText() + "";
-                } else if (pesquisa.equals("CPF")) {
-                    query = "where P.CPF like '%" + jtFiltro.getText() + "%'";
-                } else {
-                    query = "where P.NOME like '%" + jtFiltro.getText() + "%'";
-                }
+                    if (pesquisa.equals("Código Paciente")) {
+                        query = "where P.ID_PACIENTE = " + jtFiltro.getText() + "";
+                    } else if (pesquisa.equals("CPF")) {
+                        query = "where P.CPF like '%" + jtFiltro.getText() + "%'";
+                    } else {
+                        query = "where P.NOME like '%" + jtFiltro.getText() + "%'";
+                    }
 
-                ArrayList<Paciente> p = new ArrayList<>();
+                    ArrayList<Paciente> p = new ArrayList<>();
 
-                /* Buscando um ArrayList conforme o filtro que o usuário
+                    /* Buscando um ArrayList conforme o filtro que o usuário
          solicitou. */
-                p = ps.buscarPacienteFiltro(query);
+                    p = ps.buscarPacienteFiltro(query);
 
-                //Limpando a tabela
-                limparTabela();
+                    //Limpando a tabela
+                    limparTabela();
 
-                /* For que preenche o modelo de tabela (dtm) buscando 
+                    /* For que preenche o modelo de tabela (dtm) buscando 
          dados do ArrayList chamado p. */
-                for (int i = 0; i < p.size(); i++) {
-                    dtm.addRow(new String[]{
-                        String.valueOf(p.get(i).getIdPaciente()),
-                        String.valueOf(p.get(i).getNome()),
-                        String.valueOf(p.get(i).getCpf()),
-                        String.valueOf(p.get(i).getRg()),
-                        String.valueOf(p.get(i).getTelefone()),
-                        String.valueOf(p.get(i).getEndereco()),
-                        String.valueOf(p.get(i).getDataNascimento()),
-                        String.valueOf(p.get(i).getNomeConv()),
-                        String.valueOf(p.get(i).getEmail()),});
+                    for (int i = 0; i < p.size(); i++) {
+                        dtm.addRow(new String[]{
+                            String.valueOf(p.get(i).getIdPaciente()),
+                            String.valueOf(p.get(i).getNome()),
+                            String.valueOf(p.get(i).getCpf()),
+                            String.valueOf(p.get(i).getRg()),
+                            String.valueOf(p.get(i).getTelefone()),
+                            String.valueOf(p.get(i).getEndereco()),
+                            String.valueOf(p.get(i).getDataNascimento()),
+                            String.valueOf(p.get(i).getNomeConv()),
+                            String.valueOf(p.get(i).getEmail()),});
 
-                }//fecha for
+                    }//fecha for
 
-                /* Adicionando o modelo de tabela 
+                    /* Adicionando o modelo de tabela 
                com os dados na tabela produto */
-                jtablePaciente.setModel(dtm);
+                    jtablePaciente.setModel(dtm);
 
+                }
             } else {
 
                 preencherTabela();
@@ -284,4 +287,20 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jtFiltro;
     private javax.swing.JTable jtablePaciente;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validarCampos(String pesquisa) {
+        boolean validado = true;
+
+        boolean idValido = jtFiltro.getText().matches("[0-9]{1,3}");
+
+        if (idValido == false & pesquisa.equals("Código Paciente")) {
+            JOptionPane.showMessageDialog(rootPane, "Não é permitido filtragem com caracteres alfabéticos");
+            jtFiltro.setText("");
+            jtFiltro.requestFocus();
+        } else {
+            validado = false;
+        }
+
+        return validado;
+    }
 }
