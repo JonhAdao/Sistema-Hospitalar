@@ -108,11 +108,6 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
         jtFiltro.setBounds(510, 40, 170, 40);
 
         jcomboFiltro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Código Paciente", "CPF", "Nome Paciente", " " }));
-        jcomboFiltro.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcomboFiltroActionPerformed(evt);
-            }
-        });
         jLayeredPane3.add(jcomboFiltro);
         jcomboFiltro.setBounds(50, 40, 170, 40);
 
@@ -214,11 +209,11 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
                 /* Testando o que o usuário escolheu no JComboBox. Conforme
                  o que foi escolhido uma determinada consulta será montada. */
                 if (pesquisa.equals("Código Paciente")) {
-                    query = "where ID_PACIENTE = " + jtFiltro.getText() + "";
+                    query = "where P.ID_PACIENTE = " + jtFiltro.getText() + "";
                 } else if (pesquisa.equals("CPF")) {
-                    query = "where CPF like '%" + jtFiltro.getText() + "%'";
+                    query = "where P.CPF like '%" + jtFiltro.getText() + "%'";
                 } else {
-                    query = "where NOME like '%" + jtFiltro.getText() + "%'";
+                    query = "where P.NOME like '%" + jtFiltro.getText() + "%'";
                 }
 
                 ArrayList<Paciente> p = new ArrayList<>();
@@ -241,7 +236,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
                         String.valueOf(p.get(i).getTelefone()),
                         String.valueOf(p.get(i).getEndereco()),
                         String.valueOf(p.get(i).getDataNascimento()),
-                        String.valueOf(p.get(i).getIdConvenio()),
+                        String.valueOf(p.get(i).getNomeConv()),
                         String.valueOf(p.get(i).getEmail()),});
 
                 }//fecha for
@@ -255,7 +250,7 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
                 preencherTabela();
 
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(this,
                     "Erro ao buscar! " + e.getMessage());
         }//fecha catch
@@ -275,10 +270,6 @@ public class GuiJTableBuscaPaciente extends javax.swing.JInternalFrame {
     private void jbPreencherTabelaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbPreencherTabelaActionPerformed
         preencherTabela();
     }//GEN-LAST:event_jbPreencherTabelaActionPerformed
-
-    private void jcomboFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcomboFiltroActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jcomboFiltroActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLayeredPane jLayeredPane1;
